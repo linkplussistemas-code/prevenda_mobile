@@ -1,0 +1,19 @@
+workflows:
+  ios-workflow:
+    name: Build iOS App
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: CocoaPods installation
+        script: |
+          cd ios && pod install
+      - name: Build ipa for testing
+        script: |
+          flutter build ipa --no-pub --release --export-options-plist=ios/ExportOptions.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
